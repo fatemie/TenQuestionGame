@@ -42,6 +42,9 @@ class questionActivity : AppCompatActivity() {
         if(questionNumber == 1){
             binding.prevbutton.isEnabled = false
         }
+        if(questionNumber == 3){
+            binding.nextbutton.isEnabled = false
+        }
 
 //        if(question.questionList[questionNumber-1].isCheated == false){
 //            Toast.makeText(this, "you can use cheat", Toast.LENGTH_SHORT).show()
