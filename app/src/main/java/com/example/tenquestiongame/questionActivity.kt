@@ -1,9 +1,12 @@
 package com.example.tenquestiongame
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.tenquestiongame.databinding.ActivityQuectionBinding
 
 class questionActivity : AppCompatActivity() {
@@ -12,7 +15,7 @@ class questionActivity : AppCompatActivity() {
     var questionNumber = 0
     var question = Question()
     var answerPressed = false
-    var cheatUsed = false
+    var cheatList = arrayListOf(false, false,false)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,20 +25,11 @@ class questionActivity : AppCompatActivity() {
         setContentView(view)
         question.data()
         questionNumber = intent.getIntExtra("questionNumber", 0)
-        title = "Question $questionNumber"
+      //  title = "Question $questionNumber"
         setListener()
 
     }
 
-//    fun onActivityResult( requestCode : Int, resultCode : Int, data : Intent) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == 100) {
-//            if (resultCode == RESULT_OK) {
-//                var result = data.getStringExtra("resultBack")
-//                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
 
     fun setListener(){
         setQuestion()
@@ -60,9 +54,11 @@ class questionActivity : AppCompatActivity() {
         binding.prevbutton.setOnClickListener {
             setPrevButton()
         }
+
         binding.cheatbutton.setOnClickListener {
             setCheatButton()
         }
+
     }
 
     fun setQuestion(){
@@ -77,8 +73,11 @@ class questionActivity : AppCompatActivity() {
             else{
                  Toast.makeText(this, "Incorrect", Toast.LENGTH_SHORT).show()
             }
-        answerPressed = true
         }
+        answerPressed = true
+//        binding.truebutton.isEnabled =false
+//        binding.falsebutton.isEnabled=false
+//        binding.cheatbutton.isEnabled=false
     }
 
     fun setFalseButton(){
@@ -90,6 +89,10 @@ class questionActivity : AppCompatActivity() {
             }
         }
         answerPressed = true
+//        binding.truebutton.isEnabled =false
+//        binding.falsebutton.isEnabled=false
+//        binding.cheatbutton.isEnabled=false
+
     }
 
     fun setNextButton(){
@@ -98,10 +101,18 @@ class questionActivity : AppCompatActivity() {
             binding.prevbutton.isEnabled = true
             setQuestion()
             answerPressed = false
+//            if(question.questionList[questionNumber-1].isCheated){
+//                Toast.makeText(this, "you can't use cheat", Toast.LENGTH_SHORT).show()
+//            }
+//            else{
+//                Toast.makeText(this, "you can use cheat", Toast.LENGTH_SHORT).show()
+//            }
         }
         if(questionNumber == 3){
             binding.nextbutton.isEnabled = false
         }
+
+
     }
 
     fun setPrevButton(){
@@ -110,6 +121,12 @@ class questionActivity : AppCompatActivity() {
             binding.nextbutton.isEnabled = true
             setQuestion()
             answerPressed = false
+//            if(question.questionList[questionNumber-1].isCheated){
+//                Toast.makeText(this, "you can't use cheat", Toast.LENGTH_SHORT).show()
+//            }
+//            else{
+//                Toast.makeText(this, "you can use cheat", Toast.LENGTH_SHORT).show()
+//            }
         }
         if(questionNumber == 1){
             binding.prevbutton.isEnabled = false
@@ -118,15 +135,30 @@ class questionActivity : AppCompatActivity() {
 
     fun setCheatButton(){
 
-        if(question.questionList[questionNumber].isCheated == false){
+        if(question.questionList[questionNumber-1].isCheated == false){
             val intent = Intent(this, CheatActivity::class.java).
             putExtra("questionNumber", questionNumber)
-            startActivity(intent)
+            startForResult.launch(intent)
         }
         else{
             Toast.makeText(this, "you can't use cheat", Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+            val cheatisUsed =  intent?.getBooleanExtra("isCheated", false)
+
+            cheatisUsed?.let{
+                if(it) {
+                    Toast.makeText(this, "cheat use!", Toast.LENGTH_SHORT).show()
+                    question.questionList[questionNumber-1].isCheated = true
+                }
+            }
+        }
     }
 
 }

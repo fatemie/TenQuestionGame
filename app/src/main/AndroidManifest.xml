@@ -11,7 +11,8 @@
         android:theme="@style/Theme.TenQuestionGame">
         <activity
             android:name=".CheatActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".questionActivity"/>
         <activity
             android:name=".questionActivity"
             android:exported="false" />
