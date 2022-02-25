@@ -10,13 +10,12 @@
         android:id="@+id/questionView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
         android:fontFamily="cursive"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@id/truebutton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline1"
-        app:layout_constraintBottom_toTopOf="@id/truebutton"
-        tools:layout_editor_absoluteY="230dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/truebutton"
@@ -62,10 +61,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/oranged"
-        android:text="prev"
         android:fontFamily="cursive"
+        android:text="prev"
         app:icon="?attr/actionModeCloseDrawable"
-        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/nextbutton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cheatbutton" />
@@ -75,11 +74,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/orangef"
-        android:text="next"
         android:fontFamily="cursive"
+        android:text="next"
         app:icon="@drawable/ic_baseline_arrow_forward_24"
         app:iconGravity="end"
-        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/prevbutton"
         app:layout_constraintTop_toBottomOf="@id/cheatbutton" />
